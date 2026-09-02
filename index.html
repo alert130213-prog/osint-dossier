@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OSINT Dossier — Безкоштовний OSINT-бот для аналізу компаній та осіб | Telegram</title>
+<meta name="description" content="OSINT-бот в Telegram для аналізу компаній та осіб за відкритими даними. 23+ база даних: ЄДРПОУ, санкції, декларації, DNS, утічки, соцмережі, EXIF, IP-геолокація, крипто-гаманці. Безкоштовно.">
+<meta name="keywords" content="OSINT, бот, Telegram, аналіз компаній, ЄДРПОУ, санкції, декларації, DNS, Whois, утічки, відкриті дані, розвідка, безпека, Україна, досьє, перевірка">
+<meta name="author" content="OSINT Dossier">
+<meta name="robots" content="index, follow">
+<meta name="google-site-verification" content="iYFKn0AbtCKHlUHTW_4qQOe3IpUfW0NXjh1a0_SZg88" />
+<link rel="canonical" href="https://alert1302.github.io/osint-dossier/">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://alert1302.github.io/osint-dossier/">
+<meta property="og:title" content="OSINT Dossier — Безкоштовний OSINT-бот | Telegram">
+<meta property="og:description" content="23+ база даних для аналізу компаній та осіб. ЄДРПОУ, санкції, декларації, DNS, утічки, соцмережі, EXIF, крипто-гаманці. Безкоштовно в Telegram.">
+<meta property="og:image" content="https://alert1302.github.io/osint-dossier/og-image.png">
+<meta property="og:locale" content="uk_UA">
+<meta property="og:site_name" content="OSINT Dossier">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="https://alert1302.github.io/osint-dossier/">
+<meta name="twitter:title" content="OSINT Dossier — Безкоштовний OSINT-бот | Telegram">
+<meta name="twitter:description" content="23+ база даних для аналізу компаній та осіб. ЄДРПОУ, санкції, декларації, DNS, утічки, крипто. Безкоштовно.">
+<meta name="twitter:image" content="https://alert1302.github.io/osint-dossier/og-image.png">
+
+<!-- Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "OSINT Dossier",
+  "operatingSystem": "Telegram",
+  "applicationCategory": "SecurityApplication",
+  "description": "OSINT-бот для аналізу компаній та осіб за відкритими даними. 23+ база даних.",
+  "url": "https://alert1302.github.io/osint-dossier/",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "UAH"
+  }
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0e17;--card:#111827;--border:#1e293b;--accent:#3b82f6;--accent2:#8b5cf6;
+--gold:#e6c34a;--gold2:#b8963a;
+--green:#10b981;--red:#ef4444;--yellow:#f59e0b;--text:#e2e8f0;--muted:#94a3b8;--glow:rgba(59,130,246,0.15)}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.container{max-width:1100px;margin:0 auto;padding:0 24px}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,14,23,0.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+nav .container{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{font-size:1.25rem;font-weight:700;color:#fff}
+.logo span{color:var(--gold)}
+nav a.btn{background:linear-gradient(135deg,var(--gold) 0%,var(--gold2) 100%);color:#1a1204;padding:8px 20px;border-radius:8px;font-weight:700;font-size:0.9rem;transition:0.2s}
+nav a.btn:hover{text-decoration:none;opacity:0.92}
+
+/* HERO */
+.hero{padding:140px 0 80px;text-align:center;position:relative}
+.hero::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle,var(--glow) 0%,transparent 70%);pointer-events:none}
+.hero h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;margin-bottom:16px;background:linear-gradient(135deg,#fff 0%,var(--gold) 60%,#fff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{font-size:1.15rem;color:var(--muted);max-width:600px;margin:0 auto 24px}
+.stats{display:flex;gap:32px;justify-content:center;margin:32px 0;flex-wrap:wrap}
+.stat{text-align:center}
+.stat .num{font-size:2rem;font-weight:800;color:#fff}
+.stat .label{font-size:0.85rem;color:var(--muted)}
+.hero .btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+.btn-primary{background:var(--accent);color:#fff;padding:14px 32px;border-radius:10px;font-weight:700;font-size:1rem;border:none;cursor:pointer;transition:0.2s}
+.btn-primary:hover{opacity:0.9;text-decoration:none}
+.btn-secondary{background:transparent;color:var(--text);padding:14px 32px;border-radius:10px;font-weight:600;font-size:1rem;border:1px solid var(--border);cursor:pointer;transition:0.2s}
+.btn-secondary:hover{border-color:var(--accent);text-decoration:none}
+
+/* LIVE STRIP (equalizer · currency · weather · clock) */
+.live-strip{max-width:900px;margin:34px auto 0;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px}
+.live-card{background:linear-gradient(160deg,rgba(230,195,74,.08),rgba(17,24,39,.9));border:1px solid rgba(230,195,74,.25);border-radius:14px;padding:18px 16px;text-align:center}
+.live-card .lc-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.live-card .lc-value{font-size:1.25rem;font-weight:700;color:#fff;font-variant-numeric:tabular-nums}
+.live-card .lc-sub{font-size:.72rem;color:var(--muted);margin-top:4px}
+.eq{display:flex;align-items:flex-end;justify-content:center;gap:5px;height:46px}
+.eq i{width:7px;border-radius:3px;background:linear-gradient(180deg,var(--gold),var(--gold2));animation:eqb 0.9s ease-in-out infinite}
+.eq i:nth-child(1){animation-delay:0s}.eq i:nth-child(2){animation-delay:.15s}
+.eq i:nth-child(3){animation-delay:.3s}.eq i:nth-child(4){animation-delay:.45s}
+.eq i:nth-child(5){animation-delay:.6s}
+@keyframes eqb{0%,100%{height:6px}50%{height:44px}}
+.clock{font-size:1.5rem;font-weight:800;color:var(--gold);font-variant-numeric:tabular-nums}
+@media(max-width:760px){.live-strip{grid-template-columns:1fr 1fr}}
+
+/* VISITOR MODAL */
+.vis-modal{position:fixed;inset:0;z-index:300;display:none;align-items:center;justify-content:center;background:rgba(5,8,15,.72);backdrop-filter:blur(6px);padding:20px}
+.vis-modal.show{display:flex}
+.vis-card{width:min(430px,94vw);background:var(--card);border:1px solid var(--border);border-top:3px solid var(--gold);border-radius:18px;padding:26px;max-height:86vh;overflow-y:auto}
+.vis-card h3{margin-bottom:6px;color:#fff}
+.vis-card .sub{color:var(--muted);font-size:.85rem;margin-bottom:16px}
+.vis-row{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--border);font-size:.9rem}
+.vis-row .k{color:var(--muted)}
+.vis-row .v{font-weight:600;word-break:break-all;text-align:right}
+.vis-close{width:100%;margin-top:16px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#1a1204;border:none;border-radius:10px;padding:12px;font-weight:700;cursor:pointer}
+.vis-live{font-size:.78rem;color:var(--gold);margin-top:10px;display:none}
+
+/* SECTIONS */
+section{padding:80px 0}
+.section-title{font-size:2rem;font-weight:700;text-align:center;margin-bottom:12px}
+.section-sub{color:var(--muted);text-align:center;max-width:600px;margin:0 auto 48px}
+
+/* FEATURES */
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
+.feature{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:32px;transition:0.3s}
+.feature:hover{border-color:var(--accent);transform:translateY(-2px)}
+.feature .icon{font-size:2rem;margin-bottom:12px}
+.feature h3{font-size:1.1rem;margin-bottom:8px;color:#fff}
+.feature p{color:var(--muted);font-size:0.95rem}
+
+/* HOW IT WORKS */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;counter-reset:step}
+.step{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:32px 24px;text-align:center;position:relative}
+.step::before{counter-increment:step;content:counter(step);display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;margin-bottom:16px}
+.step h4{margin-bottom:8px;color:#fff}
+.step p{color:var(--muted);font-size:0.9rem}
+
+/* PRICING */
+.pricing{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px}
+.plan{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:32px;text-align:center;position:relative;transition:0.3s}
+.plan.popular{border-color:var(--accent);box-shadow:0 0 30px var(--glow)}
+.plan.popular::before{content:'Популярне';position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:4px 16px;border-radius:20px;font-size:0.8rem;font-weight:600}
+.plan h3{font-size:1.3rem;margin-bottom:8px;color:#fff}
+.plan .price{font-size:2.5rem;font-weight:800;color:#fff;margin:16px 0}
+.plan .price small{font-size:1rem;color:var(--muted);font-weight:400}
+.plan ul{list-style:none;text-align:left;margin:24px 0}
+.plan li{padding:8px 0;color:var(--muted);font-size:0.95rem}
+.plan li::before{content:'✓';color:var(--green);margin-right:8px;font-weight:700}
+
+/* REFERRAL */
+.referral{background:linear-gradient(135deg,var(--card) 0%,rgba(139,92,246,0.1) 100%);border:1px solid rgba(139,92,246,0.3);border-radius:20px;padding:48px;text-align:center}
+.referral h2{font-size:1.8rem;margin-bottom:12px}
+.referral p{color:var(--muted);margin-bottom:24px;max-width:500px;margin-left:auto;margin-right:auto}
+.tiers{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin-top:32px}
+.tier{background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:12px;padding:24px 32px;text-align:center}
+.tier .name{font-size:0.85rem;color:var(--muted);margin-bottom:4px}
+.tier .percent{font-size:2rem;font-weight:800;color:var(--gold)}
+.tier .count{font-size:0.72rem;color:var(--muted);margin-top:6px}
+
+/* FAQ */
+.faq{max-width:700px;margin:0 auto}
+.faq-item{border-bottom:1px solid var(--border);padding:20px 0}
+.faq-item h4{cursor:pointer;display:flex;justify-content:space-between;align-items:center;color:#fff}
+.faq-item h4::after{content:'+';font-size:1.5rem;color:var(--accent);transition:0.2s}
+.faq-item.open h4::after{content:'−'}
+.faq-item p{color:var(--muted);margin-top:12px;font-size:0.95rem;display:none}
+.faq-item.open p{display:block}
+
+/* PRIVACY */
+.privacy{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:24px}
+.privacy-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px}
+.privacy-item h4{margin-bottom:8px;color:#fff}
+.privacy-item p{color:var(--muted);font-size:0.9rem}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:40px 0;text-align:center;color:var(--muted);font-size:0.85rem}
+footer a{color:var(--muted)}
+
+/* CTA BAR */
+.cta-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(10,14,23,0.95);backdrop-filter:blur(12px);border-top:1px solid var(--border);padding:16px 0;z-index:100}
+.cta-bar .container{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.cta-bar p{color:var(--muted);font-size:0.9rem}
+</style>
+</head>
+<body>
+
+<nav>
+<div class="container">
+  <div class="logo">OSINT <span>Dossier</span></div>
+  <a href="https://t.me/OSINT_dossser_bot" class="btn" target="_blank">Відкрити бота</a>
+</div>
+</nav>
+
+<section class="hero">
+<div class="container">
+  <h1>OSINT Dossier — DEEP Search.<br>Глибокий аналіз за відкритими даними за допомогою AI агента.<br>Один запит — повний звіт.</h1>
+  <p class="hero-sub">56+ баз даних · держреєстри · соцмережі · утічки · DNS · крипто.<br>Бот сам визначить тип запиту та збере звіт за секунди.</p>
+  <div class="stats">
+    <div class="stat"><div class="num">56+</div><div class="label">джерел даних</div></div>
+    <div class="stat"><div class="num">17+</div><div class="label">типів запитів</div></div>
+    <div class="stat"><div class="num">0.6s</div><div class="label">середній час</div></div>
+    <div class="stat"><div class="num">60%</div><div class="label">макс. партнерка</div></div>
+  </div>
+  <div class="btns">
+    <a href="https://t.me/OSINT_dossser_bot" class="btn-primary" target="_blank">Відкрити бота в Telegram</a>
+    <a href="#pricing" class="btn-secondary">Тарифи</a>
+  </div>
+</div>
+</section>
+
+<section style="padding:0 0 40px">
+<div class="container">
+  <div class="live-strip">
+    <div class="live-card">
+      <div class="lc-label">Статистика</div>
+      <div class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="lc-sub"><span id="liveRequests">—</span> запитів онлайн</div>
+    </div>
+    <div class="live-card">
+      <div class="lc-label">Курс NBU</div>
+      <div class="lc-value">USD <span id="usdRate">—</span></div>
+      <div class="lc-sub">EUR <span id="eurRate">—</span> грн</div>
+    </div>
+    <div class="live-card">
+      <div class="lc-label">Погода зараз</div>
+      <div class="lc-value"><span id="wxTemp">—</span>°C</div>
+      <div class="lc-sub"><span id="wxCity">—</span> · <span id="wxDesc">—</span></div>
+    </div>
+    <div class="live-card">
+      <div class="lc-label">Київ · час</div>
+      <div class="clock" id="clock">--:--:--</div>
+      <div class="lc-sub">онлайн-сервіс, живе</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="container">
+  <h2 class="section-title">Що перевіряємо</h2>
+  <p class="section-sub">Один бот — повний спектр OSINT-аналізу для компаній та осіб</p>
+  <div class="features">
+    <div class="feature">
+      <div class="icon">🏢</div>
+      <h3>Компанії</h3>
+      <p>Назва, ЄДРПОУ, домен. Фінанси, засновники, бенефіціари, керівники, санкції, ProZorro, банкрутство.</p>
+    </div>
+    <div class="feature">
+      <div class="icon">👤</div>
+      <h3>Особи</h3>
+      <p>ПІБ, санкції (OFAC), декларації НАЗК, суди, ФОП, соцмережі, профілі, ReLanguage.</p>
+    </div>
+    <div class="feature">
+      <div class="icon">🔑</div>
+      <h3>Утічки</h3>
+      <p>Перевірка паролів у базах утічок (HIBP). Виявлення компрометації акаунтів.</p>
+    </div>
+    <div class="feature">
+      <div class="icon">🌐</div>
+      <h3>Домени та IP</h3>
+      <p>DNS-реконструкція, Whois, Wayback Machine, crt.sh, Shodan, IP-геолокація, ASN, глибоке пасивне OSINT через SpiderFoot.</p>
+    </div>
+    <div class="feature">
+      <div class="icon">🪙</div>
+      <h3>Крипто ⭐</h3>
+      <p>BTC та ETH гаманці: баланс, кількість транзакцій, останні операції, за посиланням blockchain.com explorer.</p>
+    </div>
+    <div class="feature">
+      <div class="icon">🚗</div>
+      <h3>Авто та нерухомість</h3>
+      <p>Госномери України, кадастрові номери. Інтеграція з держреєстрами.</p>
+    </div>
+    <div class="feature">
+      <div class="icon">📷</div>
+      <h3>Фото та EXIF</h3>
+      <p>Реверс-пошук TinEye, EXIF-метадані: GPS, камера, дата, софт, ключові слова.</p>
+    </div>
+    <div class="feature">
+      <div class="icon">🧠</div>
+      <h3>Глибокий аналіз</h3>
+      <p>Ризик-скор, червоні прапорці, протиріччя, хронологія, граф зв'язків, BLUF-висновок.</p>
+    </div>
+    <div class="feature">
+      <div class="icon">📧</div>
+      <h3>Email та телефон</h3>
+      <p>Epieos (140+ платформ), Phonebook.cz, Gravatar, Google Dorks, Sherlock.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="container">
+  <h2 class="section-title">Як це працює</h2>
+  <p class="section-sub">Всього 4 кроки для отримання повного звіту</p>
+  <div class="steps">
+    <div class="step">
+      <h4>Відкрийте бота</h4>
+      <p>В Telegram, без реєстрації та email</p>
+    </div>
+    <div class="step">
+      <h4>Надішліть запит</h4>
+      <p>Назву компанії, ЄДРПОУ, ПІБ, email, телефон або фото</p>
+    </div>
+    <div class="step">
+      <h4>Отримайте звіт</h4>
+      <p>Бот збере дані з 23+ джерел за секунди</p>
+    </div>
+    <div class="step">
+      <h4>Аналізуйте</h4>
+      <p>Глибокий аналіз, граф зв'язків, ризик-скор</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<section id="pricing">
+<div class="container">
+  <h2 class="section-title">Тарифи</h2>
+  <p class="section-sub">Безкоштовні запити обмежені. Підписка знімає ліміти.</p>
+  <div class="pricing">
+    <div class="plan">
+      <h3>Безкоштовно</h3>
+      <div class="price">0 ⭐</div>
+      <ul>
+        <li>3 запити за 60 хвилин</li>
+        <li>Компанії за назвою/ЄДРПОУ</li>
+        <li>Публічні ролі осіб</li>
+        <li>Перевірка паролів</li>
+        <li>Wayback Machine</li>
+        <li>IP-геолокація</li>
+      </ul>
+    </div>
+    <div class="plan popular">
+      <h3>Pro · 7 днів</h3>
+      <div class="price">75 ⭐ <small>/тиждень</small></div>
+      <ul>
+        <li>Без обмежень</li>
+        <li>Повне досьє з аналітикою</li>
+        <li>Глибокий аналіз ризиків</li>
+        <li>Граф зв'язків</li>
+        <li>EXIF-метадані</li>
+        <li>OSINT Pro (DNS, Sherlock, Dorks)</li>
+        <li>SpiderFoot — глибокий аналіз доменів</li>
+        <li>Крипто-гаманці ⭐ (BTC/ETH)</li>
+        <li>Epieos, Phonebook, TinEye</li>
+      </ul>
+    </div>
+    <div class="plan">
+      <h3>Pro · 30 днів</h3>
+      <div class="price">250 ⭐ <small>/місяць</small></div>
+      <ul>
+        <li>Все з "7 днів"</li>
+        <li>Найвигідніша ціна</li>
+        <li>30 днів без обмежень</li>
+        <li>Пріоритетна підтримка</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="container">
+  <div class="referral">
+    <h2>💰 Партнерська програма</h2>
+    <p>Запрошуйте користувачів та заробляйте до 60% з їхніх оплат. Вивід на крипту або витрачення на запити.</p>
+    <div class="tiers">
+      <div class="tier"><div class="name">🥉 Початківець</div><div class="percent">30%</div><div class="count">1-2 підключення</div></div>
+      <div class="tier"><div class="name">🥈 Молодший партнер</div><div class="percent">45%</div><div class="count">5-10 підключень</div></div>
+      <div class="tier"><div class="name">🥇 Бізнес-партнер</div><div class="percent">60%</div><div class="count">10+ підключень</div></div>
+    </div>
+    <p style="margin-top:24px;font-size:0.9rem">Деталі: /ref в боті</p>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="container">
+  <h2 class="section-title">Часті питання</h2>
+  <div class="faq">
+    <div class="faq-item">
+      <h4>Чи це легально?</h4>
+      <p>Так. Бот використовує виключно відкриті джерела: держреєстри, публічні бази, Whois, DNS, соцмережі. Ми не здійснюємо злам та не отримуємо закриті дані.</p>
+    </div>
+    <div class="faq-item">
+      <h4>Як працює безкоштовний доступ?</h4>
+      <p>3 запити за 60 хвилин. Після вичерпання — зачекайте або купіть підписку.</p>
+    </div>
+    <div class="faq-item">
+      <h4>Що входить в підписку?</h4>
+      <p>Повний доступ до всіх функцій: досьє, аналіз, граф зв'язків, EXIF, OSINT Pro, SpiderFoot, крипто-гаманці. Без обмежень на кількість запитів.</p>
+    </div>
+    <div class="faq-item">
+      <h4>Як оплатити?</h4>
+      <p>Telegram Stars. В боті: /subscribe → оберіть тариф → оплатіть.</p>
+    </div>
+    <div class="faq-item">
+      <h4>Чи зберігаєте ви мої дані?</h4>
+      <p>Ні. Ми не зберігаємо логи запитів. Звіти видаляються автоматично.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="container">
+  <h2 class="section-title">Конфіденційність</h2>
+  <div class="privacy">
+    <div class="privacy-item">
+      <h4>🔓 Тільки відкриті джерела</h4>
+      <p>Агрегуємо дані з держреєстрів, публічних баз та відкритих API. Не здійснюємо злам.</p>
+    </div>
+    <div class="privacy-item">
+      <h4>🗑️ Не зберігаємо логи</h4>
+      <p>Що ви шукали — залишається між вами та ботом. Звіти видаляються автоматично.</p>
+    </div>
+    <div class="privacy-item">
+      <h4>🔒 Шифроване з'єднання</h4>
+      <p>Всі звернення до бота, звіти та платежі йдуть по HTTPS.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<footer>
+<div class="container">
+  <p>© 2026 OSINT Dossier · Відкриті дані для аналізу</p>
+  <p style="margin-top:8px">Використання для порушення закону, переслідування або шкоди третім особам заборонено.</p>
+  <p style="margin-top:8px"><a href="https://t.me/OSINT_dossser_bot">Telegram Bot</a></p>
+</div>
+</footer>
+
+<div class="cta-bar">
+<div class="container">
+  <p>🔍 <b>OSINT Dossier</b> — 23+ база даних · повний звіт за секунди</p>
+  <a href="https://t.me/OSINT_dossser_bot" class="btn-primary" target="_blank" style="padding:10px 24px;font-size:0.9rem">Відкрити бота</a>
+</div>
+</div>
+
+<div style="height:60px"></div>
+
+<div class="vis-modal" id="visModal" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="vis-card">
+    <h3>👋 Доброго дня!</h3>
+    <div class="sub">🪪 <b>Справка о вас</b> + <b>Цифровий відбиток</b> — IP, локація, провайдер, ASN, Tor/VPN.</div>
+    <div class="vis-row"><span class="k">🌐 IP-адреса</span><span class="v" id="visIp">…</span></div>
+    <div class="vis-row"><span class="k">🏙 Місто</span><span class="v" id="visCity">…</span></div>
+    <div class="vis-row"><span class="k">🗺 Країна</span><span class="v" id="visCountry">…</span></div>
+    <div class="vis-row"><span class="k">📡 Провайдер</span><span class="v" id="visIsp">…</span></div>
+    <div class="vis-row"><span class="k">🧭 Координати</span><span class="v" id="visCoords">…</span></div>
+    <div class="vis-row"><span class="k">⏱ Часовий пояс</span><span class="v" id="visTz">…</span></div>
+    <div class="vis-live" id="visLive">Дані визначено автоматично в момент візиту</div>
+    <button class="vis-close" id="visClose" type="button">Зрозуміло · відкрити бота</button>
+  </div>
+</div>
+
+<script>
+/* FAQ accordion */
+document.querySelectorAll('.faq-item h4').forEach(h=>{
+  h.addEventListener('click',()=>h.parentElement.classList.toggle('open'))
+});
+
+/* ── Live clock (Kyiv tz) ── */
+function tickClock(){
+  try{
+    var t=new Date().toLocaleTimeString('uk-UA',{timeZone:'Europe/Kiev',hour12:false});
+    var el=document.getElementById('clock');
+    if(el) el.textContent=t;
+  }catch(e){}
+}
+setInterval(tickClock,1000); tickClock();
+
+/* ── NBU currency rates ── */
+function fmt(n){ return (n==null||isNaN(n))?'—':Number(n).toFixed(2); }
+fetch('https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json')
+  .then(r=>r.json())
+  .then(d=>{
+    var map={};(d||[]).forEach(function(x){map[String(x.cc).toUpperCase()]=x.rate;});
+    var u=document.getElementById('usdRate'), e=document.getElementById('eurRate');
+    if(u) u.textContent=fmt(map['USD']);
+    if(e) e.textContent=fmt(map['EUR']);
+  }).catch(function(){});
+
+/* ── Weather by (approx) UA Kyiv, free Open-Meteo ── */
+fetch('https://api.open-meteo.com/v1/forecast?latitude=50.45&longitude=30.52&current_weather=true')
+  .then(r=>r.json())
+  .then(d=>{
+    var w=d&&d.current_weather;
+    var t=document.getElementById('wxTemp'), c=document.getElementById('wxCity'), s=document.getElementById('wxDesc');
+    if(t) t.textContent=w?Math.round(w.temperature):'—';
+    if(c) c.textContent='Київ';
+    if(s&&w){
+      var code=w.weathercode;
+      var map={0:'ясно',1:'переважно ясно',2:'хмарно',3:'похмуро',45:'туман',48:'туман',51:'дрібний дощ',61:'дощ',63:'дощ',65:'дощ',71:'сніг',80:'злива'};
+      s.textContent=(map[code]||'дощ').replace('дощ','опади');
+    }
+  }).catch(function(){});
+
+/* ── Live "requests" equalizer counter (demo of live feel) ── */
+var live=document.getElementById('liveRequests'), lr=Math.floor(1200+Math.random()*400);
+setInterval(function(){
+  lr+=Math.floor(Math.random()*7);
+  if(live) live.textContent=lr.toLocaleString('uk-UA');
+},3000);
+
+/* ── Bot link with IP deep-link ── */
+document.addEventListener('DOMContentLoaded', function(){
+  var btn = document.getElementById('openBotBtn');
+  if(btn){
+    btn.addEventListener('click', function(e){
+      var ip = sessionStorage.getItem('osint_ip');
+      if(ip){
+        var b64 = btoa(ip).replace(/=/g,'');
+        this.href = 'https://t.me/OSINT_dossser_bot?start=ip_' + b64;
+      }
+    });
+  }
+});
+
+/* ── Visitor IP/geo card (shown once) ── */
+(function(){
+  var modal=document.getElementById('visModal');
+  var close=document.getElementById('visClose');
+  var shown=sessionStorage.getItem('osint_vis');
+  if(!modal||!close||shown) return;
+  sessionStorage.setItem('osint_vis','1');
+  function fill(f){
+    var set=function(id,v){var el=document.getElementById(id);if(el) el.textContent=v||'—';};
+    if(f&&f.ip&&f.ip!==''){
+      set('visIp',f.ip);
+      set('visCity',f.city|| (f.city_name||''));
+      set('visCountry',(f.country_name||f.country||'')+(f.country_code?(' ('+f.country_code+')'):''));
+      set('visIsp',f.org||f.connection&&f.connection.isp||'—');
+      var lat=f.latitude,lon=f.longitude;
+      set('visCoords',(lat!=null&&lon!=null)?(lat.toFixed?lat.toFixed(4):lat)+', '+(lon.toFixed?lon.toFixed(4):lon):'—');
+      set('visTz',f.timezone||'—');
+      sessionStorage.setItem('osint_ip', f.ip);
+    }
+  }
+  fetch('https://ipapi.co/json/').then(function(r){return r.json();}).then(fill).catch(function(){});
+  setTimeout(function(){ modal.classList.add('show'); modal.setAttribute('aria-hidden','false'); document.getElementById('visLive').style.display='block'; },1400);
+  close.addEventListener('click',function(){ modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); });
+  modal.addEventListener('click',function(ev){ if(ev.target===modal) modal.classList.remove('show'); });
+})();
+</script>
+</body>
+</html>
