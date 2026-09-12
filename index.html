@@ -493,44 +493,63 @@ setInterval(function(){
   if(live) live.textContent=lr.toLocaleString('uk-UA');
 },3000);
 
-/* ── Bot link with IP deep-link ── */
-document.addEventListener('DOMContentLoaded', function(){
-  var btn = document.getElementById('openBotBtn');
-  if(btn){
-    btn.addEventListener('click', function(e){
-      var ip = sessionStorage.getItem('osint_ip');
-      if(ip){
-        var b64 = btoa(ip).replace(/=/g,'');
-        this.href = 'https://t.me/OSINT_dossser_bot?start=ip_' + b64;
-      }
-    });
-  }
-});
-
-/* ── Visitor IP/geo card (shown once) ── */
+/* ── Visitor IP/geo: single fetch → bot deep-links on ALL buttons + modal ── */
 (function(){
-  var modal=document.getElementById('visModal');
-  var close=document.getElementById('visClose');
-  var shown=sessionStorage.getItem('osint_vis');
-  if(!modal||!close||shown) return;
-  sessionStorage.setItem('osint_vis','1');
-  function fill(f){
+  var BOT='https://t.me/OSINT_dossser_bot';
+  var geo=null;
+  try{ geo=JSON.parse(sessionStorage.getItem('osint_geo')||'null'); }catch(e){}
+
+  function b64url(s){
+    return btoa(unescape(encodeURIComponent(s)))
+      .replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,'');
+  }
+  function updateLinks(){
+    if(!geo||!geo.ip) return;
+    var payload;
+    try{
+      payload=b64url(JSON.stringify({
+        ip:geo.ip, city:geo.city||'', co:geo.country_name||geo.country||'',
+        org:geo.org||(geo.connection&&geo.connection.isp)||'', tz:geo.timezone||''
+      }));
+    }catch(e){
+      try{ payload=b64url(geo.ip); }catch(_){ return; }
+    }
+    var links=document.querySelectorAll('a[href^="'+BOT+'"]');
+    for(var i=0;i<links.length;i++) links[i].href=BOT+'?start=ip_'+payload;
+  }
+  function fillModal(){
+    var modal=document.getElementById('visModal');
+    if(!modal||sessionStorage.getItem('osint_vis')) return;
+    sessionStorage.setItem('osint_vis','1');
     var set=function(id,v){var el=document.getElementById(id);if(el) el.textContent=v||'—';};
-    if(f&&f.ip&&f.ip!==''){
-      set('visIp',f.ip);
-      set('visCity',f.city|| (f.city_name||''));
-      set('visCountry',(f.country_name||f.country||'')+(f.country_code?(' ('+f.country_code+')'):''));
-      set('visIsp',f.org||f.connection&&f.connection.isp||'—');
-      var lat=f.latitude,lon=f.longitude;
+    if(geo&&geo.ip){
+      set('visIp',geo.ip);
+      set('visCity',geo.city||'');
+      set('visCountry',(geo.country_name||geo.country||'')+(geo.country_code?(' ('+geo.country_code+')'):''));
+      set('visIsp',geo.org||(geo.connection&&geo.connection.isp)||'—');
+      var lat=geo.latitude,lon=geo.longitude;
       set('visCoords',(lat!=null&&lon!=null)?(lat.toFixed?lat.toFixed(4):lat)+', '+(lon.toFixed?lon.toFixed(4):lon):'—');
-      set('visTz',f.timezone||'—');
-      sessionStorage.setItem('osint_ip', f.ip);
+      set('visTz',geo.timezone||'—');
+      var close=document.getElementById('visClose');
+      var live=document.getElementById('visLive');
+      setTimeout(function(){ modal.classList.add('show'); modal.setAttribute('aria-hidden','false'); if(live) live.style.display='block'; },1400);
+      if(close) close.addEventListener('click',function(){ modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); });
+      modal.addEventListener('click',function(ev){ if(ev.target===modal) modal.classList.remove('show'); });
     }
   }
-  fetch('https://ipapi.co/json/').then(function(r){return r.json();}).then(fill).catch(function(){});
-  setTimeout(function(){ modal.classList.add('show'); modal.setAttribute('aria-hidden','false'); document.getElementById('visLive').style.display='block'; },1400);
-  close.addEventListener('click',function(){ modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); });
-  modal.addEventListener('click',function(ev){ if(ev.target===modal) modal.classList.remove('show'); });
+  function done(f){
+    if(f&&f.ip){
+      geo=f;
+      try{ sessionStorage.setItem('osint_geo',JSON.stringify(f)); }catch(e){}
+    }
+    updateLinks();
+    fillModal();
+  }
+  if(geo){ done(geo); }
+  else{
+    fetch('https://ipapi.co/json/').then(function(r){return r.json();}).then(done)
+      .catch(function(){ updateLinks(); });
+  }
 })();
 </script>
 </body>
